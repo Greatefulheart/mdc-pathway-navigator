@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pathway Navigator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B2545;--blue:#0B5FA5;--blue-50:#EAF2FB;--orange:#F4A259;--ink:#0F172A;--muted:#475569;--line:#E2E8F0;--bg:#F5F7FA;--ok:#0F7B4C}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.5}
+h1,h2,h3{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.01em;margin:0}
+a{color:var(--blue)}a:hover{color:#08467A}
+button{font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 20px}
+header.top{background:var(--navy);color:#fff}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:14px;padding-bottom:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none}
+.brand:hover{color:#fff}
+.brand b{font-family:'Space Grotesk',sans-serif;font-size:20px}
+.brand small{display:block;color:#C9D6E8;font-size:12px}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap}
+nav.tabs a{color:#fff;text-decoration:none;padding:9px 14px;border-radius:10px;font-weight:600;font-size:14px}
+nav.tabs a[aria-current="page"]{background:rgba(255,255,255,.14)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:12px;border:2px solid var(--blue);background:var(--blue);color:#fff;font-weight:600;font-size:15px;text-decoration:none}
+.btn:hover{background:#08467A;border-color:#08467A;color:#fff}
+.btn.ghost{background:#fff;color:var(--blue)}
+.btn.ghost:hover{background:var(--blue-50);color:var(--blue)}
+.btn.warm{background:var(--orange);border-color:var(--orange);color:var(--navy)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:22px}
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.hero{background:var(--navy);color:#fff;padding:48px 0 56px}
+.hero h1{font-size:clamp(32px,5vw,52px);line-height:1.08;max-width:820px}
+.hero p{color:#C9D6E8;font-size:18px;max-width:640px;margin:16px 0 24px}
+.hero .actions{display:flex;gap:12px;flex-wrap:wrap}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.career{display:flex;flex-direction:column;gap:10px;text-align:left;background:#fff;border:2px solid var(--line);border-radius:16px;padding:20px;color:var(--ink);text-decoration:none;transition:border-color .15s,transform .15s}
+.career:hover{border-color:var(--blue);transform:translateY(-2px);color:var(--ink)}
+.career .icon{width:48px;height:48px;border-radius:12px;background:var(--blue-50);color:var(--blue);display:flex;align-items:center;justify-content:center}
+.career h3{font-size:20px}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--blue-50);color:var(--blue)}
+section.block{padding:36px 0}
+.how{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.how .n{width:34px;height:34px;border-radius:999px;background:var(--orange);color:var(--navy);display:flex;align-items:center;justify-content:center;font-weight:700;margin-bottom:8px}
+/* quiz */
+.quiz{max-width:720px;margin:36px auto}
+.progress{height:8px;background:var(--line);border-radius:999px;overflow:hidden}
+.progress>div{height:100%;background:var(--blue);border-radius:999px;transition:width .25s}
+.opts{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+.opt{text-align:left;min-height:52px;padding:12px 16px;border-radius:12px;border:2px solid var(--line);background:#fff;font-size:16px;color:var(--ink)}
+.opt:hover{border-color:var(--blue);background:var(--blue-50)}
+/* roadmap */
+.layout{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-start;padding:28px 0 56px}
+.side{flex:1 1 280px;max-width:360px;display:flex;flex-direction:column;gap:16px}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:16px}
+label.f{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:14px}
+select,input[type=number]{min-height:44px;border-radius:10px;border:2px solid #CBD5E1;padding:0 12px;font:inherit;background:#fff;color:var(--ink)}
+.seg{display:flex;gap:6px}
+.seg button{flex:1;min-height:44px;border-radius:10px;border:2px solid #CBD5E1;background:#fff;font-weight:600;color:var(--ink)}
+.seg button[aria-pressed="true"]{background:var(--blue);border-color:var(--blue);color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:var(--blue-50);border-radius:12px;padding:12px 14px}
+.stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:22px;color:var(--blue)}
+.stat span{font-size:13px;color:var(--muted)}
+.next{display:flex;gap:12px;align-items:flex-start;background:#FFF4E8;border:1px solid #F6C99A;border-radius:12px;padding:14px}
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+ol.steps li{display:flex;gap:14px}
+.rail{display:flex;flex-direction:column;align-items:center;width:40px;flex:none}
+.dot{width:40px;height:40px;border-radius:999px;border:2px solid var(--blue);background:#fff;color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:700}
+.done .dot{background:var(--blue);color:#fff}
+.rail .ln{flex:1;width:2px;background:#CBD5E1;margin-top:6px}
+.step{flex:1;min-width:0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-start}
+.done .step{background:#F8FAFC}
+.done .step h3{text-decoration:line-through;text-decoration-color:#94A3B8}
+.step .body{flex:1 1 300px;min-width:0;display:flex;flex-direction:column;gap:6px}
+.step h3{font-family:Inter,sans-serif;font-size:16px;font-weight:700}
+.step .meta{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:13px;color:var(--muted)}
+.tag{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;border-radius:6px;background:var(--blue-50);color:var(--blue)}
+.tag.par{background:#EEF7F1;color:var(--ok)}
+.check{min-height:44px;padding:0 14px;border-radius:10px;border:2px solid #CBD5E1;background:#fff;font-weight:600;color:var(--ink);white-space:nowrap}
+.done .check{background:var(--blue);border-color:var(--blue);color:#fff}
+.tasks{margin:4px 0 0;padding-left:18px;font-size:14px;color:#334155}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+.recos{display:grid;gap:12px;margin-top:16px}
+.dialog{position:fixed;inset:0;background:rgba(15,23,42,.5);display:none;align-items:center;justify-content:center;padding:20px}
+.dialog.open{display:flex}
+.dialog .card{max-width:560px;width:100%}
+textarea{width:100%;min-height:220px;border-radius:10px;border:2px solid #CBD5E1;padding:10px;font:13px/1.5 ui-monospace,monospace}
+footer{padding:24px 0 40px;font-size:13px;color:var(--muted)}
+.hide{display:none!important}
+@media (max-width:600px){.hero{padding:32px 0 40px}.side{max-width:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#home" aria-label="Pathway Navigator home">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#F4A259" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      <span><b>Pathway Navigator</b><small>Start at Miami Dade College</small></span>
+    </a>
+    <nav class="tabs" aria-label="Main">
+      <a href="#home" data-nav="home">Explore</a>
+      <a href="#quiz" data-nav="quiz">Interest quiz</a>
+      <a href="#my-plan" data-nav="plan">My roadmap</a>
+    </nav>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<div class="dialog" id="dlg" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
+  <div class="card">
+    <h2 id="dlgTitle" style="font-size:22px;margin-bottom:8px">Your roadmap as text</h2>
+    <p class="muted" style="margin:0 0 10px">Copy it into an email to your advisor, your notes app or a document.</p>
+    <label for="dlgText" class="hide">Roadmap text</label>
+    <textarea id="dlgText" readonly></textarea>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap">
+      <button class="btn ghost" id="dlgClose">Close</button>
+      <button class="btn" id="dlgCopy">Copy text</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+'use strict';
+
+/* ---------- Icons ---------- */
+var ICON = {
+  arch:'<path d="M3 21h18"/><path d="M5 21V8l7-5 7 5v13"/><path d="M9 21v-6h6v6"/>',
+  mech:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68 1.65 1.65 0 0 0 10 3.17V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
+  chef:'<path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 9.18 0A4 4 0 0 1 18 13.87V21H6z"/><path d="M6 17h12"/>',
+  cyber:'<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/>',
+  itc:'<rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/>'
+};
+function icon(id,size){size=size||26;return '<svg width="'+size+'" height="'+size+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+ICON[id]+'</svg>';}
+
+/* ---------- Data ----------
+   kind: 'mdc' = MDC associate (time computed from credits & pace)
+         'sem' = fixed semesters {ft,pt}
+         'par' = runs in parallel (adds no time)
+         'post'= after school, free-text duration                        */
+var LINKS = {
+  mdc:'https://www.mdc.edu/', fiu:'https://www.fiu.edu/', comptia:'https://www.comptia.org/',
+  ec:'https://www.eccouncil.org/', ncarb:'https://www.ncarb.org/', ncees:'https://ncees.org/',
+  servsafe:'https://www.servsafe.com/', acf:'https://www.acfchefs.org/', aws:'https://aws.amazon.com/certification/'
+};
+var CAREERS = [
+ {id:'arch',name:'Architect',tag:'Design buildings and spaces',goal:'Licensed architect',
+  summary:'MDC Associate in Arts → accredited architecture degree → supervised experience → state license.',
+  steps:[
+   {kind:'sem',sem:{ft:0,pt:0},phase:'Explore',title:'Meet an MDC advisor and declare the architecture pathway',where:'MDC Advisement',link:'mdc',tasks:['Bring transcripts or AP scores','Ask which design studio sequence to start','Start a sketchbook / portfolio folder']},
+   {kind:'mdc',phase:'MDC',title:'Associate in Arts, architecture track',where:'Miami Dade College',link:'mdc',tasks:['Design studio and drawing courses','Calculus and physics','Build a portfolio every semester']},
+   {kind:'sem',sem:{ft:6,pt:10},phase:'Transfer',title:'Transfer to an accredited architecture program',where:'e.g. FIU School of Architecture',link:'fiu',tasks:['Apply with your portfolio in your final MDC year','Use Florida 2+2 transfer to enter as a junior','Choose a degree that leads to licensure']},
+   {kind:'par',phase:'Experience',title:'Log supervised practice hours',where:'Architecture firms',link:'ncarb',tasks:['Open an NCARB record early','Paid internships count toward required hours']},
+   {kind:'post',dur:'1–3 yrs',phase:'License',title:'Pass the licensing exams and apply for a Florida license',where:'NCARB / Florida board',link:'ncarb',tasks:['Complete the exam series','Finish experience hours','Apply to the state board']}
+  ]},
+ {id:'mech',name:'Mechanical Engineer',tag:'Design machines and systems',goal:'Professional Engineer (PE)',
+  summary:'MDC Associate in Arts (engineering) → ABET-accredited bachelor’s → FE exam → PE license.',
+  steps:[
+   {kind:'sem',sem:{ft:0,pt:0},phase:'Explore',title:'Place into the calculus sequence',where:'MDC Testing + Advisement',link:'mdc',tasks:['Take math placement','Add a summer math course if you place below Calculus I']},
+   {kind:'mdc',phase:'MDC',title:'Associate in Arts, engineering pathway',where:'MDC School of Engineering + Technology',link:'mdc',tasks:['Calculus I–III and differential equations','Physics with calculus','General chemistry']},
+   {kind:'sem',sem:{ft:5,pt:8},phase:'Transfer',title:'B.S. in Mechanical Engineering',where:'e.g. FIU College of Engineering',link:'fiu',tasks:['Transfer as a junior via 2+2','Pick an ABET-accredited program','Join a student engineering team']},
+   {kind:'par',phase:'Experience',title:'Co-op or summer internship',where:'Local engineering employers',link:'fiu',tasks:['Apply each fall for next summer','Keep a project log for interviews']},
+   {kind:'par',phase:'Certify',title:'Pass the FE exam near graduation',where:'NCEES',link:'ncees',tasks:['Register in your senior year','Become an Engineer Intern']},
+   {kind:'post',dur:'~4 yrs on the job',phase:'License',title:'Earn your PE license',where:'NCEES / Florida board',link:'ncees',tasks:['Gain qualifying work experience','Pass the PE exam']}
+  ]},
+ {id:'chef',name:'Chef',tag:'Lead a professional kitchen',goal:'Executive chef',
+  summary:'Culinary associate degree → food-safety certification → externship → climb the kitchen brigade.',
+  steps:[
+   {kind:'sem',sem:{ft:0,pt:0},phase:'Explore',title:'Tour the culinary institute kitchens',where:'Miami Culinary Institute (MDC)',link:'mdc',tasks:['Meet a chef instructor','Ask about uniforms and knife kit costs']},
+   {kind:'mdc',phase:'MDC',title:'Associate in Science, Culinary Arts',where:'Miami Culinary Institute (MDC)',link:'mdc',tasks:['Kitchen labs, baking and pastry','Nutrition, menu costing, kitchen management']},
+   {kind:'par',phase:'Certify',title:'Food Protection Manager certification',where:'ServSafe',link:'servsafe',tasks:['Often completed inside the program']},
+   {kind:'par',phase:'Experience',title:'Restaurant or hotel externship',where:'Partner restaurants and hotels',link:'mdc',tasks:['Work a real line','Collect references']},
+   {kind:'post',dur:'3–7 yrs',phase:'Career',title:'Line cook → sous chef → chef',where:'Industry + American Culinary Federation',link:'acf',tasks:['Add professional chef certification as you lead']}
+  ]},
+ {id:'cyber',name:'Cybersecurity Specialist',tag:'Protect systems and data',goal:'Security analyst → specialist',
+  summary:'Cybersecurity associate degree + industry certs → bachelor’s at MDC → security analyst.',
+  steps:[
+   {kind:'sem',sem:{ft:0,pt:0},phase:'Explore',title:'Join a capture-the-flag (CTF) club',where:'MDC student clubs',link:'mdc',tasks:['Try beginner CTF challenges','Set up a home lab (free VMs)']},
+   {kind:'mdc',phase:'MDC',title:'Associate in Science, Cybersecurity',where:'Miami Dade College',link:'mdc',tasks:['Networking and Linux','Security fundamentals','Ethical hacking labs']},
+   {kind:'par',phase:'Certify',title:'CompTIA Security+',where:'CompTIA',link:'comptia',tasks:['Take it in your second year']},
+   {kind:'par',phase:'Experience',title:'SOC or help-desk internship',where:'Local employers and public agencies',link:'mdc',tasks:['Monitor alerts, handle tickets','Ask about tuition support']},
+   {kind:'sem',sem:{ft:4,pt:7},phase:'Advance',title:'Bachelor of Applied Science, Cybersecurity',where:'Miami Dade College',link:'mdc',tasks:['Stack your A.S. into a bachelor’s','Can be done while working']},
+   {kind:'post',dur:'After first role',phase:'Certify',title:'Ethical hacking certification (e.g. CEH)',where:'EC-Council',link:'ec',tasks:['Move toward penetration testing']}
+  ]},
+ {id:'itc',name:'IT Consultant',tag:'Advise businesses on technology',goal:'IT consultant',
+  summary:'IT associate degree + certs → bachelor’s in information systems → hands-on role → consulting.',
+  steps:[
+   {kind:'sem',sem:{ft:0,pt:0},phase:'Explore',title:'Shadow an IT professional',where:'MDC career services',link:'mdc',tasks:['Ask what a consultant does day to day','Pick a focus: cloud, security, data']},
+   {kind:'mdc',phase:'MDC',title:'Associate in Science, Computer Information Technology',where:'Miami Dade College',link:'mdc',tasks:['Networking and databases','Operating systems and scripting']},
+   {kind:'par',phase:'Certify',title:'CompTIA A+ and Network+',where:'CompTIA',link:'comptia',tasks:['Prove you can support users and networks']},
+   {kind:'sem',sem:{ft:4,pt:7},phase:'Advance',title:'Bachelor’s in information systems',where:'MDC BAS or university transfer',link:'mdc',tasks:['Project management','Business analysis','Cloud architecture']},
+   {kind:'post',dur:'1–2 yrs',phase:'Experience',title:'Systems or business analyst role',where:'Employers in Miami-Dade',link:'mdc',tasks:['Learn how tech decisions affect cost']},
+   {kind:'post',dur:'Ongoing',phase:'Career',title:'Cloud certification, then consulting',where:'AWS / Microsoft',link:'aws',tasks:['Join a firm or go independent']}
+  ]}
+];
+var BY = {}; CAREERS.forEach(function(c){BY[c.id]=c;});
+
+var QUIZ = [
+ {q:'Which class would you pick for fun?',o:[['Art or drawing',{arch:2}],['Physics or robotics',{mech:2}],['Cooking or nutrition',{chef:2}],['Computer science',{cyber:1,itc:1}]]},
+ {q:'Your ideal workday looks like…',o:[['Sketching and designing spaces',{arch:2}],['Building and testing things',{mech:2}],['A fast, busy kitchen',{chef:2}],['Solving tech problems on a computer',{cyber:1,itc:2}]]},
+ {q:'What problem would you love to solve?',o:[['Make cities more beautiful and livable',{arch:2}],['Make machines more efficient',{mech:2}],['Create food people remember',{chef:2}],['Stop hackers and protect data',{cyber:2}]]},
+ {q:'How do you like working?',o:[['Creative projects with clients',{arch:1,itc:1}],['Hands-on with tools',{mech:1,chef:1}],['Puzzles and investigations',{cyber:2}],['Explaining ideas and advising people',{itc:2}]]},
+ {q:'How long are you willing to study?',o:[['2 years, then start working',{chef:2,cyber:1}],['4 years',{mech:1,itc:1,cyber:1}],['As long as it takes',{arch:2,mech:1}],['Work and study at the same time',{itc:1,cyber:1,chef:1}]]}
+];
+
+var TERMS = ['Spring','Fall'];
+
+/* ---------- State ---------- */
+var KEY = 'mdc-pathway-v1';
+var S = {career:null,pace:'ft',credits:0,startYear:2027,startTerm:'Fall',done:{},quiz:null};
+try{var saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved)Object.assign(S,saved);}catch(e){}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+
+/* ---------- Helpers ---------- */
+var app=document.getElementById('app');
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function toast(msg){var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast._t);toast._t=setTimeout(function(){t.classList.remove('show');},1800);}
+function termAdd(term,year,n){var i=TERMS.indexOf(term)+n;return {term:TERMS[((i%2)+2)%2],year:year+Math.floor(i/2)};}
+function termStr(t){return t.term+' '+t.year;}
+function semsLabel(n){if(n<=0)return 'A few weeks';var y=n/2;return n+' semesters (~'+(y%1?y.toFixed(1):y)+' yr'+(y>1?'s':'')+')';}
+
+function plan(c){
+  var cur={term:S.startTerm,year:S.startYear},total=0,out=[];
+  c.steps.forEach(function(s,i){
+    var n=0,when='',time='';
+    if(s.kind==='mdc'){var rem=Math.max(0,60-S.credits);n=Math.ceil(rem/(S.pace==='ft'?15:9));time=n?semsLabel(n)+' · '+rem+' credits left':'Already complete';}
+    else if(s.kind==='sem'){n=s.sem[S.pace];time=semsLabel(n);}
+    else if(s.kind==='par'){time='Alongside your studies';}
+    else {time=s.dur;}
+    if(s.kind==='mdc'||s.kind==='sem'){
+      if(n>0){var end=termAdd(cur.term,cur.year,n-1);when=termStr(cur)+' – '+termStr(end);cur=termAdd(cur.term,cur.year,n);}
+      else when='Before '+termStr(cur);
+      total+=n;
+    } else if(s.kind==='post'){when='From '+termStr(cur);}
+    out.push({s:s,i:i,time:time,when:when});
+  });
+  return {steps:out,total:total,finish:termAdd(cur.term,cur.year,-1)};
+}
+
+/* ---------- Views ---------- */
+function setNav(v){document.querySelectorAll('[data-nav]').forEach(function(a){if(a.dataset.nav===v)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});}
+
+function viewHome(){
+  setNav('home');
+  app.innerHTML=
+  '<section class="hero"><div class="wrap">'+
+   '<h1>Pick a career. Get your step-by-step plan, starting at Miami Dade College.</h1>'+
+   '<p>Courses, transfer, certifications, internships and licensing, laid out by semester and adjusted to how you study.</p>'+
+   '<div class="actions"><a class="btn warm" href="#quiz">Not sure? Take the 2-minute quiz</a><a class="btn ghost" href="#careers">Browse careers</a></div>'+
+  '</div></section>'+
+  '<section class="block" id="careers"><div class="wrap">'+
+   '<p class="eyebrow">Choose your goal</p><h2 style="font-size:28px;margin:4px 0 18px">Where do you want to end up?</h2>'+
+   '<div class="grid">'+CAREERS.map(function(c){
+     return '<a class="career" href="#'+c.id+'"><span class="icon">'+icon(c.id)+'</span><h3>'+esc(c.name)+'</h3><span class="muted" style="font-size:14px">'+esc(c.tag)+'</span><span class="pill">Goal: '+esc(c.goal)+'</span></a>';
+   }).join('')+'</div>'+
+  '</div></section>'+
+  '<section class="block" style="padding-top:0"><div class="wrap"><div class="how">'+
+   [['Choose','Pick a career, or let the quiz suggest one.'],['Personalize','Set your pace, start term and credits you already have.'],['Follow','See every step by semester, with links to where it happens.'],['Track','Check off milestones and always know your next move.']].map(function(h,i){
+     return '<div class="card"><div class="n">'+(i+1)+'</div><h3 style="font-size:18px">'+h[0]+'</h3><p class="muted" style="margin:6px 0 0">'+h[1]+'</p></div>';
+   }).join('')+
+  '</div></div></section>'+footer();
+}
+
+var qi=0,qs={};
+function viewQuiz(){
+  setNav('quiz');
+  if(qi>=QUIZ.length)return viewQuizResult();
+  var q=QUIZ[qi];
+  app.innerHTML='<div class="wrap"><div class="quiz card">'+
+   '<p class="eyebrow">Question '+(qi+1)+' of '+QUIZ.length+'</p>'+
+   '<div class="progress" aria-hidden="true"><div style="width:'+(qi/QUIZ.length*100)+'%"></div></div>'+
+   '<h2 style="font-size:26px;margin-top:18px">'+esc(q.q)+'</h2>'+
+   '<div class="opts">'+q.o.map(function(o,i){return '<button class="opt" data-a="'+i+'">'+esc(o[0])+'</button>';}).join('')+'</div>'+
+   (qi>0?'<button class="btn ghost" style="margin-top:16px" id="qBack">Back</button>':'')+
+  '</div></div>';
+  app.querySelectorAll('.opt').forEach(function(b){b.onclick=function(){
+    var pts=q.o[+b.dataset.a][1];Object.keys(pts).forEach(function(k){qs[k]=(qs[k]||0)+pts[k];});
+    (qs._h=qs._h||[]).push(pts);qi++;viewQuiz();app.querySelector('h2')&&app.querySelector('h2').focus&&0;
+  };});
+  var bk=document.getElementById('qBack');if(bk)bk.onclick=function(){var p=qs._h.pop();Object.keys(p).forEach(function(k){qs[k]-=p[k];});qi--;viewQuiz();};
+}
+function viewQuizResult(){
+  var ranked=CAREERS.map(function(c){return {c:c,s:qs[c.id]||0};}).sort(function(a,b){return b.s-a.s;});
+  var max=ranked[0].s||1;
+  S.quiz=ranked.slice(0,2).map(function(r){return r.c.id;});save();
+  app.innerHTML='<div class="wrap"><div class="quiz card">'+
+   '<p class="eyebrow">Your matches</p><h2 style="font-size:28px;margin-top:4px">Careers that fit your answers</h2>'+
+   '<div class="recos">'+ranked.map(function(r,i){var pct=Math.round(r.s/max*100);
+     return '<a class="career" href="#'+r.c.id+'" style="flex-direction:row;align-items:center;gap:14px"><span class="icon">'+icon(r.c.id)+'</span><span style="flex:1;min-width:0"><b style="font-size:17px">'+esc(r.c.name)+'</b>'+(i===0?' <span class="pill">Top match</span>':'')+
+     '<span class="progress" style="display:block;margin-top:8px" aria-label="'+pct+'% match"><div style="width:'+pct+'%"></div></span></span><span class="muted" style="font-size:14px">'+pct+'%</span></a>';
+   }).join('')+'</div>'+
+   '<div style="display:flex;gap:10px;margin-top:18px;flex-wrap:wrap"><a class="btn" href="#'+ranked[0].c.id+'">See my top roadmap</a><button class="btn ghost" id="qRe">Retake quiz</button></div>'+
+  '</div></div>';
+  document.getElementById('qRe').onclick=function(){qi=0;qs={};viewQuiz();};
+}
+
+function viewPlan(id){
+  setNav('plan');
+  var c=BY[id];S.career=id;save();
+  var p=plan(c),dm=S.done[id]||{},n=c.steps.length,dc=0,next=null;
+  p.steps.forEach(function(x){if(dm[x.i])dc++;else if(!next)next=x;});
+  var pct=Math.round(dc/n*100);
+  var years=[];for(var y=2026;y<=2030;y++)years.push(y);
+  app.innerHTML='<div class="wrap"><div class="layout">'+
+  '<aside class="side">'+
+   '<div class="card" style="display:flex;flex-direction:column;gap:14px">'+
+    '<p class="eyebrow" style="margin:0">Career</p>'+
+    '<label class="f">Goal<select id="fCareer">'+CAREERS.map(function(k){return '<option value="'+k.id+'"'+(k.id===id?' selected':'')+'>'+esc(k.name)+'</option>';}).join('')+'</select></label>'+
+    '<p class="eyebrow" style="margin:6px 0 0">About you</p>'+
+    '<div><div style="font-weight:600;font-size:14px;margin-bottom:6px" id="paceL">How will you study?</div><div class="seg" role="group" aria-labelledby="paceL">'+
+      '<button data-pace="ft" aria-pressed="'+(S.pace==='ft')+'">Full-time</button><button data-pace="pt" aria-pressed="'+(S.pace==='pt')+'">Part-time</button></div></div>'+
+    '<div style="display:flex;gap:10px"><label class="f" style="flex:1">Start term<select id="fTerm">'+TERMS.map(function(t){return '<option'+(t===S.startTerm?' selected':'')+'>'+t+'</option>';}).join('')+'</select></label>'+
+    '<label class="f" style="flex:1">Year<select id="fYear">'+years.map(function(y){return '<option'+(y===S.startYear?' selected':'')+'>'+y+'</option>';}).join('')+'</select></label></div>'+
+    '<label class="f">College credits already earned<input type="number" id="fCred" min="0" max="60" step="3" value="'+S.credits+'"><span class="muted" style="font-weight:400;font-size:13px">Include AP, dual enrollment or transfer credits (0–60).</span></label>'+
+   '</div>'+
+   '<div class="card" style="display:flex;flex-direction:column;gap:10px">'+
+    '<p class="eyebrow" style="margin:0">Take it with you</p>'+
+    '<button class="btn" id="bText">Copy roadmap as text</button>'+
+    '<button class="btn ghost" id="bLink">Copy link to this career</button>'+
+    '<a class="btn ghost" href="'+LINKS.mdc+'" target="_blank" rel="noopener">Book an MDC advisor</a>'+
+    '<button class="btn ghost" id="bReset" style="border-color:#CBD5E1;color:var(--muted)">Reset progress</button>'+
+   '</div>'+
+  '</aside>'+
+  '<section class="main" aria-labelledby="planTitle">'+
+   '<div class="card" style="display:flex;flex-direction:column;gap:14px">'+
+    '<div style="display:flex;gap:14px;align-items:center"><span class="career" style="padding:0;border:0"><span class="icon">'+icon(id,28)+'</span></span><div><p class="eyebrow" style="margin:0">Your roadmap</p><h1 id="planTitle" style="font-size:30px">'+esc(c.name)+'</h1></div></div>'+
+    '<p class="muted" style="margin:0">'+esc(c.summary)+'</p>'+
+    '<div class="stats">'+
+     '<div class="stat"><b>'+(p.total/2)+' yrs</b><span>of school ('+(S.pace==='ft'?'full-time':'part-time')+')</span></div>'+
+     '<div class="stat"><b>'+termStr(p.finish)+'</b><span>degree(s) finished</span></div>'+
+     '<div class="stat"><b>'+dc+' / '+n+'</b><span>milestones done</span></div>'+
+    '</div>'+
+    '<div class="progress" role="progressbar" aria-valuenow="'+pct+'" aria-valuemin="0" aria-valuemax="100" aria-label="Progress"><div style="width:'+pct+'%"></div></div>'+
+    '<div class="next"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B4530A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg><div><b style="color:#7A3606">Next best action</b><div>'+
+      (next?esc(next.s.title)+' — '+esc(next.s.where)+(next.s.tasks?'. First: '+esc(next.s.tasks[0].toLowerCase())+'.':''):'Roadmap complete. Time to mentor the next student!')+'</div></div></div>'+
+   '</div>'+
+   '<ol class="steps">'+p.steps.map(function(x,k){var s=x.s,d=!!dm[x.i];
+     return '<li class="'+(d?'done':'')+'"><div class="rail"><div class="dot">'+(d?'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>':(k+1))+'</div>'+(k<n-1?'<div class="ln"></div>':'')+'</div>'+
+      '<div class="step"><div class="body">'+
+       '<div class="meta"><span class="tag'+(s.kind==='par'?' par':'')+'">'+esc(s.phase)+'</span><span>'+esc(x.time)+'</span>'+(x.when?'<span>· '+esc(x.when)+'</span>':'')+'</div>'+
+       '<h3>'+esc(s.title)+'</h3>'+
+       '<div class="muted" style="font-size:14px"><b style="color:var(--ink)">Where:</b> <a href="'+LINKS[s.link]+'" target="_blank" rel="noopener">'+esc(s.where)+'</a></div>'+
+       (s.tasks?'<ul class="tasks">'+s.tasks.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul>':'')+
+      '</div><button class="check" data-step="'+x.i+'" aria-pressed="'+d+'">'+(d?'Completed':'Mark done')+'</button></div></li>';
+   }).join('')+'</ol>'+
+   '<p class="muted" style="font-size:12px;margin:0">Planning estimates. Assumes 15 credits per full-time and 9 per part-time semester, a 60-credit associate degree, and Spring/Fall terms. Confirm program details and transfer requirements with an MDC advisor.</p>'+
+  '</section></div></div>'+footer();
+
+  document.getElementById('fCareer').onchange=function(e){location.hash=e.target.value;};
+  app.querySelectorAll('[data-pace]').forEach(function(b){b.onclick=function(){S.pace=b.dataset.pace;save();viewPlan(id);};});
+  document.getElementById('fTerm').onchange=function(e){S.startTerm=e.target.value;save();viewPlan(id);};
+  document.getElementById('fYear').onchange=function(e){S.startYear=+e.target.value;save();viewPlan(id);};
+  document.getElementById('fCred').onchange=function(e){var v=Math.max(0,Math.min(60,Math.round(+e.target.value||0)));S.credits=v;save();viewPlan(id);};
+  app.querySelectorAll('.check').forEach(function(b){b.onclick=function(){
+    var i=+b.dataset.step,m=S.done[id]=S.done[id]||{};m[i]=!m[i];save();
+    var y=window.scrollY;viewPlan(id);window.scrollTo(0,y);
+    var nb=app.querySelector('.check[data-step="'+i+'"]');if(nb)nb.focus({preventScroll:true});
+    if(m[i])toast('Milestone complete');
+  };});
+  document.getElementById('bText').onclick=function(){openText(c,p);};
+  document.getElementById('bLink').onclick=function(){copy(location.href.split('#')[0]+'#'+id,'Link copied');};
+  document.getElementById('bReset').onclick=function(){S.done[id]={};save();viewPlan(id);toast('Progress reset');};
+}
+
+function planText(c,p){
+  var dm=S.done[c.id]||{},L=[];
+  L.push('MY ROADMAP: '+c.name.toUpperCase());
+  L.push('Start: '+S.startTerm+' '+S.startYear+' · '+(S.pace==='ft'?'Full-time':'Part-time')+' · '+S.credits+' credits already earned');
+  L.push('School finished: '+termStr(p.finish)+' (~'+(p.total/2)+' yrs)');L.push('');
+  p.steps.forEach(function(x,k){L.push((dm[x.i]?'[x] ':'[ ] ')+(k+1)+'. '+x.s.title);L.push('    '+x.s.phase+' · '+x.time+(x.when?' · '+x.when:'')+' · '+x.s.where);});
+  L.push('');L.push('Made with Pathway Navigator. Confirm details with an MDC advisor.');
+  return L.join('\n');
+}
+var dlg=document.getElementById('dlg'),lastFocus=null;
+function openText(c,p){lastFocus=document.activeElement;document.getElementById('dlgText').value=planText(c,p);dlg.classList.add('open');document.getElementById('dlgCopy').focus();}
+function closeDlg(){dlg.classList.remove('open');if(lastFocus)lastFocus.focus();}
+document.getElementById('dlgClose').onclick=closeDlg;
+dlg.addEventListener('click',function(e){if(e.target===dlg)closeDlg();});
+dlg.addEventListener('keydown',function(e){if(e.key==='Escape')closeDlg();});
+document.getElementById('dlgCopy').onclick=function(){var t=document.getElementById('dlgText');copy(t.value,'Roadmap copied',t);};
+function copy(text,msg,ta){
+  try{navigator.clipboard.writeText(text).then(function(){toast(msg);},function(){fallback();});}catch(e){fallback();}
+  function fallback(){if(ta){ta.select();toast('Selected — press Ctrl/Cmd+C');}else toast(text);}
+}
+
+function footer(){return '<footer><div class="wrap">Pathway Navigator · a Miami Dade College student concept. Program names and timelines are planning estimates; always confirm with an advisor.</div></footer>';}
+
+/* ---------- Router ---------- */
+function route(){
+  var h=(location.hash||'').slice(1);
+  if(BY[h])viewPlan(h);
+  else if(h==='quiz'){qi=0;qs={};viewQuiz();}
+  else if(h==='my-plan'){if(S.career)viewPlan(S.career);else{viewHome();toast('Pick a career first');}}
+  else{viewHome();if(h==='careers'){var el=document.getElementById('careers');if(el)el.scrollIntoView();return;}}
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange',route);
+route();
+})();
+</script>
+</body>
+</html>
